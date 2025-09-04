@@ -1,0 +1,17 @@
+{
+  "name": "avatar-picker",
+  "type": "registry:component",
+  "dependencies": [
+    "lucide-react",
+    "motion"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "type": "registry:component",
+      "content": "\"use client\";\r\n\r\nimport { useState } from \"react\";\r\nimport Image from \"next/image\";\r\nimport { motion, Variants } from \"framer-motion\";\r\n\r\ninterface AvatarOption {\r\n  id: number;\r\n  src: string;\r\n  alt: string;\r\n}\r\n\r\nconst avatarOptions: AvatarOption[] = [\r\n  { id: 1, src: \"/avatars/avatar1.png\", alt: \"Avatar 1\" },\r\n  { id: 2, src: \"/avatars/avatar2.png\", alt: \"Avatar 2\" },\r\n  { id: 3, src: \"/avatars/avatar3.png\", alt: \"Avatar 3\" },\r\n];\r\n\r\nconst selectedVariants: Variants = {\r\n  initial: { scale: 0.8, opacity: 0 },\r\n  animate: { scale: 1, opacity: 1, transition: { duration: 0.3 } },\r\n  exit: { scale: 0.8, opacity: 0, transition: { duration: 0.2 } },\r\n};\r\n\r\nexport default function AvatarPicker() {\r\n  const [selected, setSelected] = useState<number | null>(null);\r\n\r\n  return (\r\n    <div className=\"flex gap-6\">\r\n      {avatarOptions.map((avatar) => (\r\n        <button\r\n          key={avatar.id}\r\n          onClick={() => setSelected(avatar.id)}\r\n          className=\"relative w-20 h-20 rounded-full overflow-hidden focus:outline-none\"\r\n        >\r\n          <Image\r\n            src={avatar.src}\r\n            alt={avatar.alt}\r\n            fill\r\n            className=\"object-cover\"\r\n          />\r\n\r\n          {selected === avatar.id && (\r\n            <motion.div\r\n              className=\"absolute inset-0 rounded-full ring-2 ring-primary ring-offset-2 ring-offset-background shadow-lg shadow-primary/40\"\r\n              variants={selectedVariants}\r\n              initial=\"initial\"\r\n              animate=\"animate\"\r\n              exit=\"exit\"\r\n            />\r\n          )}\r\n        </button>\r\n      ))}\r\n    </div>\r\n  );\r\n}\r\n",
+      "path": "/components/codesnippetui/avatar-picker.tsx",
+      "target": "/components/codesnippetui/avatar-picker.tsx"
+    }
+  ]
+}

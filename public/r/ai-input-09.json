@@ -1,0 +1,30 @@
+{
+  "name": "ai-input-09",
+  "type": "registry:component",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "textarea"
+  ],
+  "files": [
+    {
+      "type": "registry:component",
+      "content": "\"use client\"\r\n\r\nimport { useState } from \"react\"\r\nimport { Mic, Send } from \"lucide-react\"\r\nimport { Textarea } from \"@/components/ui/textarea\"\r\nimport { useAutoResizeTextarea } from \"@/hooks/use-auto-resize-textarea\"\r\nimport { cn } from \"@/lib/utils\"\r\n\r\nexport default function AIInput_09() {\r\n  const { textareaRef, adjustHeight } = useAutoResizeTextarea({ minHeight: 56, maxHeight: 200 })\r\n  const [value, setValue] = useState(\"\")\r\n\r\n  const onSubmit = () => {\r\n    setValue(\"\")\r\n    adjustHeight(true)\r\n  }\r\n\r\n  return (\r\n    <div className=\"w-full py-4\">\r\n      <div className=\"max-w-xl mx-auto w-full space-y-3\">\r\n        <div className=\"relative\">\r\n          <Textarea\r\n            aria-label=\"Voice-first composer\"\r\n            ref={textareaRef}\r\n            value={value}\r\n            onChange={(e) => {\r\n              setValue(e.target.value)\r\n              adjustHeight()\r\n            }}\r\n            onKeyDown={(e) => {\r\n              if (e.key === \"Enter\" && !e.shiftKey) {\r\n                e.preventDefault()\r\n                onSubmit()\r\n              }\r\n            }}\r\n            placeholder=\"Hold mic to speak or type your request…\"\r\n            className={cn(\r\n              \"rounded-3xl bg-black/5 dark:bg-white/5 border-none pl-4 pr-24 py-4\",\r\n              \"focus-visible:ring-0 focus-visible:ring-offset-0 min-h-[56px] max-h-[200px] overflow-y-auto\",\r\n            )}\r\n          />\r\n          <div className=\"absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2\">\r\n            <button\r\n              type=\"button\"\r\n              aria-label=\"Voice input\"\r\n              className=\"rounded-full h-10 w-10 inline-flex items-center justify-center bg-blue-600 text-white\"\r\n            >\r\n              <Mic className=\"h-4 w-4\" />\r\n            </button>\r\n            <button\r\n              onClick={onSubmit}\r\n              disabled={!value}\r\n              type=\"button\"\r\n              className={cn(\r\n                \"rounded-xl p-2\",\r\n                value ? \"bg-blue-600 text-white\" : \"bg-black/5 dark:bg-white/5 text-black/50 dark:text-white/50\",\r\n              )}\r\n              aria-label=\"Send\"\r\n            >\r\n              <Send className=\"h-4 w-4\" />\r\n            </button>\r\n          </div>\r\n        </div>\r\n\r\n        <div className=\"flex gap-2 flex-wrap text-sm\">\r\n          {[\"Summarize meeting\", \"Generate follow-ups\", \"Extract decisions\"].map((x) => (\r\n            <button\r\n              key={x}\r\n              onClick={() => setValue(x)}\r\n              type=\"button\"\r\n              className=\"rounded-full bg-black/5 dark:bg-white/5 px-3 py-1.5\"\r\n            >\r\n              {x}\r\n            </button>\r\n          ))}\r\n        </div>\r\n      </div>\r\n    </div>\r\n  )\r\n}\r\n",
+      "path": "/components/codesnippetui/ai-input/ai-input-09.tsx",
+      "target": "/components/codesnippetui/ai-input-09.tsx"
+    },
+    {
+      "type": "registry:hook",
+      "content": "\r\nimport { useEffect, useRef, useCallback } from \"react\";\r\n\r\ninterface UseAutoResizeTextareaProps {\r\n    minHeight: number;\r\n    maxHeight?: number;\r\n}\r\n\r\nexport function useAutoResizeTextarea({\r\n    minHeight,\r\n    maxHeight,\r\n}: UseAutoResizeTextareaProps) {\r\n    const textareaRef = useRef<HTMLTextAreaElement>(null);\r\n\r\n    const adjustHeight = useCallback(\r\n        (reset?: boolean) => {\r\n            const textarea = textareaRef.current;\r\n            if (!textarea) return;\r\n\r\n            if (reset) {\r\n                textarea.style.height = `${minHeight}px`;\r\n                return;\r\n            }\r\n\r\n            // Temporarily shrink to get the right scrollHeight\r\n            textarea.style.height = `${minHeight}px`;\r\n\r\n            // Calculate new height\r\n            const newHeight = Math.max(\r\n                minHeight,\r\n                Math.min(\r\n                    textarea.scrollHeight,\r\n                    maxHeight ?? Number.POSITIVE_INFINITY\r\n                )\r\n            );\r\n\r\n            textarea.style.height = `${newHeight}px`;\r\n        },\r\n        [minHeight, maxHeight]\r\n    );\r\n\r\n    useEffect(() => {\r\n        // Set initial height\r\n        const textarea = textareaRef.current;\r\n        if (textarea) {\r\n            textarea.style.height = `${minHeight}px`;\r\n        }\r\n    }, [minHeight]);\r\n\r\n    // Adjust height on window resize\r\n    useEffect(() => {\r\n        const handleResize = () => adjustHeight();\r\n        window.addEventListener(\"resize\", handleResize);\r\n        return () => window.removeEventListener(\"resize\", handleResize);\r\n    }, [adjustHeight]);\r\n\r\n    return { textareaRef, adjustHeight };\r\n}",
+      "path": "/hooks/use-auto-resize-textarea.ts",
+      "target": "/hooks/use-auto-resize-textarea.ts"
+    },
+    {
+      "type": "registry:hook",
+      "content": "import { useEffect, type RefObject } from \"react\";\r\n\r\nexport function useClickOutside(\r\n    ref: RefObject<HTMLElement>,\r\n    handler: () => void\r\n) {\r\n    useEffect(() => {\r\n        const handleClickOutside = (event: MouseEvent) => {\r\n            if (ref.current && !ref.current.contains(event.target as Node)) {\r\n                handler();\r\n            }\r\n        };\r\n\r\n        document.addEventListener(\"mousedown\", handleClickOutside);\r\n        return () =>\r\n            document.removeEventListener(\"mousedown\", handleClickOutside);\r\n    }, [ref, handler]);\r\n}",
+      "path": "/hooks/use-click-outside.ts",
+      "target": "/hooks/use-click-outside.ts"
+    }
+  ]
+}

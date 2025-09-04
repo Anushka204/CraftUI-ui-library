@@ -1,0 +1,19 @@
+{
+  "name": "currency-transfer",
+  "type": "registry:component",
+  "dependencies": [
+    "lucide-react",
+    "motion"
+  ],
+  "registryDependencies": [
+    "card"
+  ],
+  "files": [
+    {
+      "type": "registry:component",
+      "content": "import type { SVGProps } from \"react\";\n\nexport function ArrowRightBroken(props: SVGProps<SVGSVGElement>) {\n    return (\n        <svg\n            xmlns=\"http://www.w3.org/2000/svg\"\n            width=\"1em\"\n            height=\"1em\"\n            viewBox=\"0 0 24 24\"\n            {...props}\n        >\n            <title>Arrow Right Down Broken</title>\n            <path\n                fill=\"none\"\n                stroke=\"currentColor\"\n                strokeLinecap=\"round\"\n                strokeLinejoin=\"round\"\n                strokeWidth=\"1.5\"\n                d=\"M18 18H9m9 0V9m0 9l-6.5-6.5M6 6l2.5 2.5\"\n            />\n        </svg>\n    );\n}\n",
+      "path": "/components/codesnippetui/currency-transfer.tsx",
+      "target": "/components/codesnippetui/currency-transfer.tsx"
+    }
+  ]
+}

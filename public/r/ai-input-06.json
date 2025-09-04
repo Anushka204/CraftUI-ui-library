@@ -1,0 +1,24 @@
+{
+  "name": "ai-input-06",
+  "type": "registry:component",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "textarea"
+  ],
+  "files": [
+    {
+      "type": "registry:component",
+      "content": "\"use client\"\r\n\r\nimport { useState } from \"react\"\r\nimport { Send, Sparkles } from \"lucide-react\"\r\nimport { Textarea } from \"@/components/ui/textarea\"\r\nimport { useAutoResizeTextarea } from \"@/hooks/use-auto-resize-textarea\"\r\nimport { cn } from \"@/lib/utils\"\r\n\r\nexport default function AIInput_06() {\r\n  const { textareaRef, adjustHeight } = useAutoResizeTextarea({ minHeight: 44, maxHeight: 160 })\r\n  const [value, setValue] = useState(\"\")\r\n\r\n  const onSubmit = () => {\r\n    setValue(\"\")\r\n    adjustHeight(true)\r\n  }\r\n\r\n  return (\r\n    <div className=\"w-full py-4\">\r\n      <div className=\"max-w-xl mx-auto w-full\">\r\n        <div\r\n          className={cn(\r\n            \"relative rounded-full bg-black/5 dark:bg-white/5 px-4 pr-14\",\r\n            \"ring-1 ring-inset ring-black/10 dark:ring-white/10\",\r\n          )}\r\n        >\r\n          <Textarea\r\n            aria-label=\"Compact composer\"\r\n            ref={textareaRef}\r\n            value={value}\r\n            onChange={(e) => {\r\n              setValue(e.target.value)\r\n              adjustHeight()\r\n            }}\r\n            onKeyDown={(e) => {\r\n              if (e.key === \"Enter\" && !e.shiftKey) {\r\n                e.preventDefault()\r\n                onSubmit()\r\n              }\r\n            }}\r\n            placeholder=\"Ask anything…\"\r\n            className=\"rounded-full bg-transparent border-none px-0 py-3 min-h-[44px] max-h-[160px] focus-visible:ring-0 focus-visible:ring-offset-0\"\r\n          />\r\n          <button\r\n            onClick={onSubmit}\r\n            disabled={!value}\r\n            type=\"button\"\r\n            className={cn(\r\n              \"absolute right-2 top-1/2 -translate-y-1/2 inline-flex h-9 w-9 items-center justify-center rounded-full transition-colors\",\r\n              value ? \"bg-blue-600 text-white\" : \"bg-black/10 dark:bg-white/10 text-black/50 dark:text-white/50\",\r\n            )}\r\n            aria-label=\"Send\"\r\n          >\r\n            <Send className=\"h-4 w-4\" />\r\n          </button>\r\n        </div>\r\n\r\n        <div className=\"mt-2 flex items-center gap-2 text-xs text-black/60 dark:text-white/60\">\r\n          <Sparkles className=\"h-3.5 w-3.5\" />\r\n          Try: “Outline a design review agenda”\r\n        </div>\r\n      </div>\r\n    </div>\r\n  )\r\n}\r\n",
+      "path": "/components/codesnippetui/ai-input/ai-input-06.tsx",
+      "target": "/components/codesnippetui/ai-input-06.tsx"
+    },
+    {
+      "type": "registry:hook",
+      "content": "\r\nimport { useEffect, useRef, useCallback } from \"react\";\r\n\r\ninterface UseAutoResizeTextareaProps {\r\n    minHeight: number;\r\n    maxHeight?: number;\r\n}\r\n\r\nexport function useAutoResizeTextarea({\r\n    minHeight,\r\n    maxHeight,\r\n}: UseAutoResizeTextareaProps) {\r\n    const textareaRef = useRef<HTMLTextAreaElement>(null);\r\n\r\n    const adjustHeight = useCallback(\r\n        (reset?: boolean) => {\r\n            const textarea = textareaRef.current;\r\n            if (!textarea) return;\r\n\r\n            if (reset) {\r\n                textarea.style.height = `${minHeight}px`;\r\n                return;\r\n            }\r\n\r\n            // Temporarily shrink to get the right scrollHeight\r\n            textarea.style.height = `${minHeight}px`;\r\n\r\n            // Calculate new height\r\n            const newHeight = Math.max(\r\n                minHeight,\r\n                Math.min(\r\n                    textarea.scrollHeight,\r\n                    maxHeight ?? Number.POSITIVE_INFINITY\r\n                )\r\n            );\r\n\r\n            textarea.style.height = `${newHeight}px`;\r\n        },\r\n        [minHeight, maxHeight]\r\n    );\r\n\r\n    useEffect(() => {\r\n        // Set initial height\r\n        const textarea = textareaRef.current;\r\n        if (textarea) {\r\n            textarea.style.height = `${minHeight}px`;\r\n        }\r\n    }, [minHeight]);\r\n\r\n    // Adjust height on window resize\r\n    useEffect(() => {\r\n        const handleResize = () => adjustHeight();\r\n        window.addEventListener(\"resize\", handleResize);\r\n        return () => window.removeEventListener(\"resize\", handleResize);\r\n    }, [adjustHeight]);\r\n\r\n    return { textareaRef, adjustHeight };\r\n}",
+      "path": "/hooks/use-auto-resize-textarea.ts",
+      "target": "/hooks/use-auto-resize-textarea.ts"
+    }
+  ]
+}
