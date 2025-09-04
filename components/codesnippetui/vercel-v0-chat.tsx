@@ -1,104 +1,159 @@
 "use client";
 
-import { ArrowUpRight, PartyPopper, Rocket } from "lucide-react";
-import Link from "next/link";
-import XIcon from "../icons/x-icon";
-import { ConfettiOutline } from "../icons/conffeti";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
+import { useAutoResizeTextarea } from "@/hooks/use-auto-resize-textarea";
+import {
+    ImageIcon,
+    FileUp,
+    Figma,
+    MonitorIcon,
+    CircleUserRound,
+    ArrowUpIcon,
+    Paperclip,
+    PlusIcon,
+} from "lucide-react";
 
-interface HeaderContent {
-  text: string;
-  productName: string;
-  link: string;
-}
+export function VercelV0Chat() {
+    const [value, setValue] = useState("");
+    const { textareaRef, adjustHeight } = useAutoResizeTextarea({
+        minHeight: 60,
+        maxHeight: 200,
+    });
 
-export function HeaderPro() {
-  const [content, setContent] = useState<HeaderContent>({
-    text: "",
-    productName: "",
-    link: "",
-  });
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            if (value.trim()) {
+                setValue("");
+                adjustHeight(true);
+            }
+        }
+    };
 
-  useEffect(() => {
-    const random = Math.random();
-    if (random < 0.75) {
-      setContent({
-        text: "Built app fast",
-        productName: "CodeSnippet Boilerplate",
-        link: "#",
-      });
-    } else {
-      setContent({
-        text: "Explore new components",
-        productName: "CodeSnippet UI Pro",
-        link: "#",
-      });
-    }
-  }, []);
+    return (
+        <div className="flex flex-col items-center w-full max-w-4xl mx-auto p-4 space-y-4 sm:space-y-8">
+            <h1 className="text-2xl sm:text-4xl font-bold text-black dark:text-white text-center">
+                What can I help you ship?
+            </h1>
 
-  return (
-    <div className="flex items-center justify-end gap-1 flex-1">
-      <div className="flex items-center justify-start md:justify-end gap-1 flex-1">
-        <Link
-          href={content.link}
-          target="_blank"
-          className="flex items-center justify-end gap-2 pl-2 pr-0.5 py-1 text-sm font-medium text-zinc-800 dark:text-zinc-200 rounded-xl border-2 border-fuchsia-500/20 hover:border-fuchsia-500/60 transition-all duration-300 group hover:shadow-md"
-        >
-          <span className="hidden md:flex items-center gap-2">
-            {content.productName === "CodeSnippet UI Pro" ? (
-              <ConfettiOutline className="w-4 h-4 text-fuchsia-500" />
-            ) : (
-              <Rocket className="w-4 h-4 text-fuchsia-500" />
-            )}
-            <span className="text-transparent bg-gradient-to-r from-fuchsia-500 via-purple-500 to-fuchsia-600 bg-clip-text font-semibold tracking-tighter">
-              {content.text}
-            </span>
-          </span>
+            <div className="w-full">
+                <div className="relative bg-neutral-900 rounded-xl border border-neutral-800">
+                    <div className="overflow-y-auto">
+                        <Textarea
+                            ref={textareaRef}
+                            value={value}
+                            onChange={(e) => {
+                                setValue(e.target.value);
+                                adjustHeight();
+                            }}
+                            onKeyDown={handleKeyDown}
+                            placeholder="Ask v0 a question..."
+                            className={cn(
+                                "w-full px-4 py-3",
+                                "resize-none",
+                                "bg-transparent",
+                                "border-none",
+                                "text-white text-sm",
+                                "focus:outline-none",
+                                "focus-visible:ring-0 focus-visible:ring-offset-0",
+                                "placeholder:text-neutral-500 placeholder:text-sm",
+                                "min-h-[60px]"
+                            )}
+                            style={{
+                                overflow: "hidden",
+                            }}
+                        />
+                    </div>
 
-          <span className="flex md:hidden items-center gap-2">
-            {content.productName === "CodeSnippet UI Pro" ? (
-              <PartyPopper className="w-4 h-4 text-fuchsia-500" />
-            ) : (
-              <Rocket className="w-4 h-4 text-fuchsia-500" />
-            )}
-            <span className="text-transparent bg-gradient-to-r from-fuchsia-500 via-purple-500 to-fuchsia-600 bg-clip-text font-semibold">
-              {content.text.split(" ")[0]}
-            </span>
-          </span>
+                    <div className="flex items-center justify-between p-3">
+                        <div className="flex items-center gap-2">
+                            <button
+                                type="button"
+                                className="group p-2 hover:bg-neutral-800 rounded-lg transition-colors flex items-center gap-1"
+                            >
+                                <Paperclip className="w-4 h-4 text-white" />
+                                <span className="text-xs text-zinc-400 hidden group-hover:inline transition-opacity">
+                                    Attach
+                                </span>
+                            </button>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <button
+                                type="button"
+                                className="px-2 py-1 rounded-lg text-sm text-zinc-400 transition-colors border border-dashed border-zinc-700 hover:border-zinc-600 hover:bg-zinc-800 flex items-center justify-between gap-1"
+                            >
+                                <PlusIcon className="w-4 h-4" />
+                                Project
+                            </button>
+                            <button
+                                type="button"
+                                className={cn(
+                                    "px-1.5 py-1.5 rounded-lg text-sm transition-colors border border-zinc-700 hover:border-zinc-600 hover:bg-zinc-800 flex items-center justify-between gap-1",
+                                    value.trim()
+                                        ? "bg-white text-black"
+                                        : "text-zinc-400"
+                                )}
+                            >
+                                <ArrowUpIcon
+                                    className={cn(
+                                        "w-4 h-4",
+                                        value.trim()
+                                            ? "text-black"
+                                            : "text-zinc-400"
+                                    )}
+                                />
+                                <span className="sr-only">Send</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
 
-          <div className="relative inline-flex items-center gap-2 px-1.5 py-0.5 text-sm rounded-lg bg-gradient-to-r from-zinc-900 to-zinc-800 dark:from-zinc-100/90 dark:to-zinc-200/90">
-            <div className="flex items-center gap-1">
-              <span className="text-white dark:text-zinc-900 group-hover:text-white dark:group-hover:text-zinc-900 tracking-tighter">
-                {content.productName}
-              </span>
-              <ArrowUpRight className="w-3.5 h-3.5 text-white/90 dark:text-zinc-900/90 group-hover:text-white dark:group-hover:text-zinc-900 transition-transform group-hover:translate-x-[1px] group-hover:-translate-y-[1px]" />
+                <div className="mt-4 -mx-4 px-4 sm:mx-0 sm:px-0">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 sm:overflow-x-auto sm:pb-2 sm:justify-center scrollbar-hide">
+                        <ActionButton
+                            icon={<ImageIcon className="w-4 h-4" />}
+                            label="Clone a Screenshot"
+                        />
+                        <ActionButton
+                            icon={<Figma className="w-4 h-4" />}
+                            label="Import from Figma"
+                        />
+                        <ActionButton
+                            icon={<FileUp className="w-4 h-4" />}
+                            label="Upload a Project"
+                        />
+                        <ActionButton
+                            icon={<MonitorIcon className="w-4 h-4" />}
+                            label="Landing Page"
+                        />
+                        <ActionButton
+                            icon={<CircleUserRound className="w-4 h-4" />}
+                            label="Sign Up Form"
+                        />
+                    </div>
+                </div>
             </div>
-          </div>
-        </Link>
-        <Link
-          href="#"
-          target="_blank"
-          className="hidden group relative md:inline-flex items-center gap-2 px-1.5 py-1.5 text-sm rounded-lg bg-zinc-900 dark:bg-zinc-100 transition-colors hover:bg-zinc-800 dark:hover:bg-zinc-200"
-        >
-          <div className="relative flex items-center gap-2 w-full">
-            <svg
-              viewBox="0 0 24 24"
-              className="w-4 h-4 text-white dark:text-zinc-900"
-              fill="currentColor"
-            >
-              <title>Github</title>
-              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
-            </svg>
-          </div>
-        </Link>
-        <Link
-          href="#"
-          target="_blank"
-          className="hidden group relative md:inline-flex items-center gap-2 px-1.5 py-1.5 text-sm rounded-lg bg-zinc-900 dark:bg-zinc-100 transition-colors hover:bg-zinc-800 dark:hover:bg-zinc-200"
-        >
-          <XIcon className="w-4 h-4 text-white dark:text-zinc-900" />
-        </Link>
-      </div>
-    </div>
-  );
+        </div>
+    );
 }
+
+interface ActionButtonProps {
+    icon: React.ReactNode;
+    label: string;
+}
+
+function ActionButton({ icon, label }: ActionButtonProps) {
+    return (
+        <button
+            type="button"
+            className="flex items-center gap-2 w-full sm:w-auto px-3 sm:px-4 py-2 bg-neutral-900 hover:bg-neutral-800 rounded-full border border-neutral-800 text-neutral-400 hover:text-white transition-colors whitespace-nowrap flex-shrink-0"
+        >
+            {icon}
+            <span className="text-xs">{label}</span>
+        </button>
+    );
+}
+
+export default VercelV0Chat;
