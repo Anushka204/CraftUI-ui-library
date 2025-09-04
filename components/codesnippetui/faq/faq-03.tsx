@@ -44,25 +44,45 @@ function FAQItem({ question, answer, category }: FAQItemProps) {
 
 function Faq03() {
     const faqs: FAQItemProps[] = [
-        {
-            question: "How do I get started?",
-            answer: "Getting started is easy! Simply sign up for an account and follow our quick setup guide. We'll walk you through each step of the process.",
+         {
+            question: "How do I get started with Craft UI?",
+            answer: "Just install it via npm or yarn, import the components you need, and start building shiny interfaces. Bonus points if you customize with Tailwind!",
             category: "Getting Started",
         },
         {
-            question: "What payment methods do you accept?",
-            answer: "We accept all major credit cards, PayPal, and bank transfers. All payments are processed securely through our payment partners.",
-            category: "Billing",
+            question: "Can I use Craft UI with React and Next.js?",
+            answer: "Absolutely! Craft UI plays nicely with React, Next.js, and even your late-night spaghetti code. Just import components and get designing!",
+            category: "Integration",
         },
         {
-            question: "Is there a free trial available?",
-            answer: "Yes! We offer a 14-day free trial with full access to all features. No credit card required to start your trial.",
+            question: "Do I need to know advanced CSS to use Craft UI?",
+            answer: "Not really! Most components work out-of-the-box, but if you love tweaking styles with Tailwind, you’ll feel like a wizard.",
+            category: "Styling",
+        },
+        {
+            question: "Is Craft UI free to use?",
+            answer: "Yes! Perfect for students, side projects, or that late-night hackathon idea you totally didn’t procrastinate on.",
             category: "Pricing",
         },
         {
-            question: "How can I contact support?",
-            answer: "Our support team is available 24/7 through our help center, email support, or live chat. We typically respond within 2 hours.",
-            category: "Support",
+            question: "How do I contribute or suggest features?",
+            answer: "Open a PR, file an issue, or just DM us your brilliant ideas. We love contributions — especially ones that include memes.",
+            category: "Community",
+        },
+        {
+            question: "Can Craft UI make my website look cooler than my roommate’s?",
+            answer: "100%! With our ready-to-use components, gradients, and animations, your portfolio will officially be ‘envy of the dorm.’",
+            category: "Fun",
+        },
+        {
+            question: "Where can I find documentation?",
+            answer: "Right here in the app! Our docs are interactive, easy to follow, and perfect for late-night coding sessions.",
+            category: "Documentation",
+        },
+        {
+            question: "What if I break something while experimenting?",
+            answer: "No worries! Craft UI is designed to be resilient. Break stuff, learn stuff, and maybe fix your code before morning lectures.",
+            category: "Troubleshooting",
         },
     ];
 
@@ -93,7 +113,7 @@ function Faq03() {
                             type="button"
                             className="inline-flex items-center justify-center px-6 py-3 rounded-lg"
                         >
-                            Contact Support
+                            Contact Support @anushka.sh2004@gmail.com
                         </button>
                     </div>
                 </div>
